@@ -2,6 +2,7 @@
     package="com.example.full_flutter_chat_app">
    <application
         android:label="full_flutter_chat_app"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

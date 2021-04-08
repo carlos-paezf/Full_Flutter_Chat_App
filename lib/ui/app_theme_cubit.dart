@@ -1,7 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:full_flutter_chat_app/data/persistent_storage_repository.dart';
 
 class AppThemeCubit extends Cubit<bool>{
-  AppThemeCubit(): super(false);
+  AppThemeCubit(this._persistentStorageRepository): super(false);
+
+  final PersistentStorageRepository _persistentStorageRepository;
   
   bool _isDark = false;
   bool get isDark => _isDark;

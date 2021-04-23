@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:full_flutter_chat_app/domain/models/chart_user.dart';
+import 'package:full_flutter_chat_app/data/stream_api_respository.dart';
+import 'package:full_flutter_chat_app/domain/models/chat_user.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChatUserState{
@@ -9,16 +10,17 @@ class ChatUserState{
 }
 
 class FriendsSelectionCubit extends Cubit<List<ChatUserState>> {
-  FriendsSelectionCubit() : super([]);
+  FriendsSelectionCubit(this._streamApiRepository) : super([]);
 
-  //final StreamApiRepository streamApiRepository;
+  final StreamApiRepository _streamApiRepository;
 
   List<ChatUserState> get selectedUsers => state.where((element) => element.selected).toList();
 
   Future<void> init() async {
-    //TODO: Call Services
-    final list = List.generate(10, (index) => ChatUserState(ChatUser(id: index.toString(), name:'Item: $index'))).toList();
-    emit(list);
+    final chatUsers = (await _streamApiRepository.getChatUser()).map((e) => ChatUserState(e));
+    emit(chatUsers);
+    //? final list = List.generate(10, (index) => ChatUserState(ChatUser(id: index.toString(), name:'Item: $index'))).toList();
+    //? emit(list);
   }
 
   void selectedUser(ChatUserState chatUserState){
@@ -28,7 +30,7 @@ class FriendsSelectionCubit extends Cubit<List<ChatUserState>> {
   }
 
   Future<Channel> createFriendChannel(ChatUserState chatUserState) async{
-    //TODO: Call services
+    return await _streamApiRepository.createSimpleChat(chatUserState.chatUser.id);
   }
 }
 

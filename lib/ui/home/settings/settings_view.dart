@@ -16,7 +16,7 @@ class SettingsView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_)=>SettingsSwitchCubit(context.read<AppThemeCubit>().isDark)),
-        BlocProvider(create: (_)=>SettingsLogoutCubit())
+        BlocProvider(create: (_)=>SettingsLogoutCubit(context.read())),
       ],
       child: Scaffold(
         body: Center(
@@ -27,7 +27,10 @@ class SettingsView extends StatelessWidget {
                 builder: (context, snapshot) {
                   return Switch(
                     value: snapshot, 
-                    onChanged: context.read<SettingsSwitchCubit>().onChangeDarkMode,
+                    onChanged: (val) {
+                      context.read<SettingsSwitchCubit>().onChangeDarkMode(val);
+                      context.read<AppThemeCubit>().updateTheme(val);
+                    },
                   );
                 }
               ),

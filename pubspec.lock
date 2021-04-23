@@ -589,7 +589,7 @@ packages:
     source: hosted
     version: "2.1.0"
   stream_chat:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stream_chat
       url: "https://pub.dartlang.org"
@@ -603,7 +603,7 @@ packages:
     source: hosted
     version: "1.5.1"
   stream_chat_flutter_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stream_chat_flutter_core
       url: "https://pub.dartlang.org"

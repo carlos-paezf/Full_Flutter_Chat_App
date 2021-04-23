@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:full_flutter_chat_app/data/auth_repository.dart';
 import 'package:full_flutter_chat_app/data/stream_api_respository.dart';
 import 'package:full_flutter_chat_app/data/upload_storage_repository.dart';
-import 'package:full_flutter_chat_app/domain/models/chart_user.dart';
+import 'package:full_flutter_chat_app/domain/models/chat_user.dart';
 
 class ProfileInput {
   ProfileInput({this.imageFile, this.name});
@@ -25,6 +25,6 @@ class ProfileSignInUseCase {
     if (input.imageFile != null) {
       image = await _uploadStorageRepository.uploadPhoto(input.imageFile, 'users/${auth.id}');
     }
-    await _streamApiRepository.connectUser(ChatUser(name: input.name, id: null, image: null), token);
+    await _streamApiRepository.connectUser(ChatUser(name: input.name, id: auth.id, image: image), token);
   }
 }

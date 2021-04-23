@@ -1,4 +1,4 @@
-import 'package:full_flutter_chat_app/domain/models/chart_user.dart';
+import 'package:full_flutter_chat_app/domain/models/chat_user.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 abstract class StreamApiRepository {

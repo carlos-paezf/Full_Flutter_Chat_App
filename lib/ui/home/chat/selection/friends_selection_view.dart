@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:full_flutter_chat_app/domain/models/chart_user.dart';
+import 'package:full_flutter_chat_app/domain/models/chat_user.dart';
 import 'package:full_flutter_chat_app/navigator_utils.dart';
+import 'package:full_flutter_chat_app/ui/home/chat/chat_view.dart';
 import 'package:full_flutter_chat_app/ui/home/chat/selection/friends_selection_cubit.dart';
 import 'package:full_flutter_chat_app/ui/home/chat/selection/group_selection_view.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class FriendsSelectionView extends StatelessWidget {
+
+  void _createFriendChannel(BuildContext context, ChatUserState chatUserState) async {
+    final channel = await context.read<FriendsSelectionCubit>().createFriendChannel(chatUserState);
+    pushAndReplaceToPage(
+      context, 
+      Scaffold(
+        body: StreamChannel(
+          channel: channel, 
+          child: ChannelPage(),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_)=> FriendsSelectionCubit()..init()),
+        BlocProvider(create: (context)=> FriendsSelectionCubit(context.read())..init()),
         BlocProvider(create: (_)=> FriendsGroupCubit())
       ],
       child: BlocBuilder<FriendsGroupCubit, bool>(builder: (context, isGroup) {
@@ -35,7 +50,7 @@ class FriendsSelectionView extends StatelessWidget {
                     else
                       Row(
                         children: [
-                          BackButton(onPressed: (){Navigator.of(context).pop;}),
+                          BackButton(onPressed: (){Navigator.of(context).pop();}),
                           Text('People'),
                         ],
                       ),
@@ -85,9 +100,11 @@ class FriendsSelectionView extends StatelessWidget {
                           final chatUserState = snapshot[index];
                           return ListTile(
                             onTap: (){
-                              print('Selected User');
+                              _createFriendChannel(context, chatUserState);
                             },
-                            leading: CircleAvatar(),
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(chatUserState.chatUser.image),
+                            ),
                             title: Text(chatUserState.chatUser.name),
                             trailing: isGroup
                               ? Checkbox(value: chatUserState.selected, 

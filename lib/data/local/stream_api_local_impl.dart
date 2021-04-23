@@ -1,5 +1,5 @@
 import 'package:full_flutter_chat_app/data/stream_api_respository.dart';
-import 'package:full_flutter_chat_app/domain/models/chart_user.dart';
+import 'package:full_flutter_chat_app/domain/models/chat_user.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class StreamApiLocalImpl extends StreamApiRepository {
@@ -16,6 +16,7 @@ class StreamApiLocalImpl extends StreamApiRepository {
     if (user.name != null) {
       extraData['name'] = user.name;
     }
+    await _client.disconnect();
     await _client.connectUser(
       User(id: user.id, extraData: extraData), 
       //token ?? _client.devToken(user.id),
@@ -70,6 +71,8 @@ class StreamApiLocalImpl extends StreamApiRepository {
 
   @override
   Future<bool> connectIfExist(String userId) async {
+    final token = await getToken(userId);
+    await _client.connectUser(User(id: userId), token);
     return false;
   }
 }

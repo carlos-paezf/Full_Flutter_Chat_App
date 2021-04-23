@@ -11,8 +11,10 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  
-  final _streamChatClient = StreamChatClient('d6asjn6wg6mb');
+  final _streamChatClient = StreamChatClient(
+    'az5jhnxcfr3q',
+    //? 'c2rynysx9x6b',
+  );
 
   @override
   Widget build(BuildContext context) {
